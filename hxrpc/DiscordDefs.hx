@@ -1,6 +1,8 @@
-package backend.discord;
+package hxrpc;
 
-// we store the typedefs here for easy access
+/**
+ * we store the typedefs here for easy access
+ */
 typedef UserData = {
     var userId:String;
     var username:String;
@@ -11,6 +13,9 @@ typedef UserData = {
     var bot:Null<Bool>;
 }
 
+/**
+ * presence data
+ */
 typedef PresenceData = {
     var ?state:String;
     var ?details:String;
@@ -32,6 +37,9 @@ typedef PresenceData = {
     var ?buttons:Array<ButtonData>;
 }
 
+/**
+ * presence button data
+ */
 typedef ButtonData = {
     var label:String;
     var url:String;

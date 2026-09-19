@@ -1,16 +1,17 @@
 {
-  "name": "haxebanana",
-  "url" : "https://github.com/melodiiCam2B/haxebanana/",
+  "name": "hxrpc",
+  "url" : "https://github.com/melodiiCam2B/hxrpc/",
   "license": "MIT",
   "tags": [
-    "haxe", 
     "api", 
-    "game banana"
+    "haxe", 
+    "discord",
+    "rich presence"
   ],
-  "releasenote": "Fixed up a few mistakes",
-  "description": "Haxe interface library for the Game Banana API",
-  "version": "1.0.2",
-  "classPath": "haxebanana",
+  "releasenote": "Initial Release",
+  "description": "Haxe interface library forvwrapping and interacting the Discord RPC api",
+  "version": "1.0.0",
+  "classPath": "hxrpc",
   "contributors": [
     "Melodii2b"
   ]

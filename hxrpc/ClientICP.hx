@@ -1,14 +1,14 @@
-package backend.discord;
+package hxrpc;
 
 import haxe.io.Bytes;
-import backend.discord.Pipeline;
-import backend.discord.Logs;
+import hxrpc.Pipeline;
+import hxrpc.Logs;
 
-import backend.discord.DiscordDefs.UserData;
-import backend.discord.DiscordDefs.PresenceData;
-import backend.discord.DiscordDefs.ButtonData;
+import hxrpc.DiscordDefs.UserData;
+import hxrpc.DiscordDefs.PresenceData;
+import hxrpc.DiscordDefs.ButtonData;
 
-class ClientICP extends backend.discord.Pipeline {
+class ClientICP extends hxrpc.Pipeline {
     public static var clientId:String = null;
 
     public var logger:Logs = null;

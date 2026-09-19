@@ -1,6 +1,8 @@
-package backend.discord;
+package hxrpc;
 
-// method class that prevents unwanted
+/**
+ * method class that logs strings if allowed
+ */
 class Logs {
     public function new(toggle:Bool){
         canLog = toggle;

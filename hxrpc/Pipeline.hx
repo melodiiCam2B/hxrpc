@@ -1,19 +1,22 @@
-package backend.discord;
-
+package hxrpc;
+/**
+ * [Pipeline] as a file handles interacting with windows' pipeline web api
+ * this is the core of the library, and I highly recommend not editing it
+ */
 import haxe.Json;
 import haxe.io.Bytes;
 import haxe.io.BytesInput;
 import haxe.io.BytesOutput;
 
 @:cppFileCode('
-#include <windows.h>
+    #include <windows.h>
 
-#undef NO_ERROR
-#undef DOMAIN
-#undef DELETE
-#undef ERROR
+    #undef NO_ERROR
+    #undef DOMAIN
+    #undef DELETE
+    #undef ERROR
 
-static HANDLE g_PipeHandle = INVALID_HANDLE_VALUE;
+    static HANDLE g_PipeHandle = INVALID_HANDLE_VALUE;
 ')
 
 class Pipeline {
@@ -56,13 +59,8 @@ class Pipeline {
             }
 
             g_PipeHandle = CreateFileA(
-                {0}.c_str(),
-                GENERIC_READ | GENERIC_WRITE,
-                0,
-                NULL,
-                OPEN_EXISTING,
-                0,
-                NULL
+                {0}.c_str(), GENERIC_READ | GENERIC_WRITE,
+                0, NULL, OPEN_EXISTING, 0, NULL
             );
 
             {1} = (g_PipeHandle != INVALID_HANDLE_VALUE);
@@ -94,7 +92,6 @@ class Pipeline {
                 char header[8];
                 DWORD bytesRead = 0;
 
-                // Step 1: Read the 8-byte header (4-byte opcode + 4-byte payload length)
                 if (ReadFile(g_PipeHandle, header, 8, &bytesRead, NULL) && bytesRead == 8) {
                     int payloadLength = *reinterpret_cast<int*>(header + 4);
 
@@ -102,10 +99,8 @@ class Pipeline {
                         int totalFrameSize = 8 + payloadLength;
                         {0} = ::haxe::io::Bytes_obj::alloc(totalFrameSize);
 
-                        // Copy header into Haxe Bytes
                         memcpy({0}->b->Pointer(), header, 8);
 
-                        // Step 2: Loop until full payload is retrieved (fixes >2048 byte limit)
                         int totalPayloadRead = 0;
                         while (totalPayloadRead < payloadLength) {
                             DWORD chunkRead = 0;
@@ -115,7 +110,7 @@ class Pipeline {
                             if (ReadFile(g_PipeHandle, destPtr, remaining, &chunkRead, NULL) && chunkRead > 0) {
                                 totalPayloadRead += chunkRead;
                             } else {
-                                break; // Read error or broken pipe
+                                break;
                             }
                         }
                     }
