@@ -8,9 +8,9 @@
     "discord",
     "rich presence"
   ],
-  "releasenote": "Initial Release",
-  "description": "Haxe interface library forvwrapping and interacting the Discord RPC api",
-  "version": "1.0.0",
+  "releasenote": "README update & Code Explination",
+  "description": "Haxe interface library for wrapping and interacting the Discord RPC api",
+  "version": "1.0.1",
   "classPath": "hxrpc",
   "contributors": [
     "Melodii2b"

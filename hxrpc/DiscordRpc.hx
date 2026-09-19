@@ -12,9 +12,10 @@ using StringTools;
  * wrapper class for the discord RPC!
  */
 class DiscordRpc {
+    // handles the communication with the api
     public static var client:ClientICP;
 
-    //
+    // the user data used to check initilization
     public static var user:UserData;
 
     // presence data for the payload
@@ -27,7 +28,9 @@ class DiscordRpc {
     public static var clientId:String;
 
     /**
-     * Starts the Rich Presence status.
+     * [Description] Starts the Rich Presence status.
+     * @param id application id for the rich presence
+     * @param toggle if logging is allowed for the library (risks clogging the terminal)
      */
     public static function setup(?id:String, ?toggle:Bool):Void {
         #if (!windows && !cpp)
@@ -61,16 +64,25 @@ class DiscordRpc {
     /**
      * ran on connection to log the payload status
      */
+    /**
+     * [Description] ran on connection to log the payload status
+     * @param connected if the payload was recieved
+     * @param user the payload holds user data to confirm it was connected
+     */
     public static function onFinish(connected:Bool, user:UserData):Void {
-        if (connected && user != null) {
+        if (connected && user != null) 
             client.logger.log('Connected successfully to ${user.username} (${user.userId})!');
-        } else if (!connected && client != null) {
+        else if (!connected && client != null) 
             client.logger.log("Discord IPC failed to connect or user data was invalid.");
-        }
+        
     }
 
     /**
-     * run before `changePresence` to take effect, this changes party things
+     * [Description] run before `changePresence` to take effect, this changes party things
+     * @param i party identification
+     * @param s current party size
+     * @param m max party size
+     * @param k party join key
      */
     public static function changeParty(i:String, ?s:Int, ?m:Int, ?k:String) {
         if (client == null) return;
@@ -88,7 +100,14 @@ class DiscordRpc {
 	}
 
     /**
-     * Updates the Rich Presence status.
+     * [Description] Updates the Rich Presence status.
+     * @param s status text
+     * @param d detail text
+     * @param skey small image key
+     * @param sstr small image text
+     * @param lkey large image key
+     * @param lstr large image text
+     * @param et ending time in seconds
      */
     public static function changePresence(s:String, d:String, ?skey:String, ?sstr:String, ?lkey:String, ?lstr:String, ?et:Float = 0) {
         if (client == null) return;
@@ -114,7 +133,11 @@ class DiscordRpc {
 	}
 
     /**
-     * adds buttons to the rich presence
+     * [Description] adds buttons to the rich presence
+     * @param fname 
+     * @param flink 
+     * @param sname 
+     * @param slink 
      */
     public static function changeButton(?fname:String, ?flink:String, ?sname:String, ?slink:String) {
         if (client == null) return;
@@ -167,7 +190,8 @@ class DiscordRpc {
     }
 
     /**
-     * checks the provided button link has valid formatting
+     * [Description] checks the provided button link has valid formatting
+     * @param url link to be checked and validated
      */
     public static function validate(url:String):Bool 
         return url != null && url != "" && (url.indexOf("http://") == 0 || url.indexOf("https://") == 0);

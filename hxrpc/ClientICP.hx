@@ -34,10 +34,19 @@ class ClientICP extends hxrpc.Pipeline {
         
         return b;
     }
-
+    /**
+     * [Description] function to check connection
+     * @return Bool
+        return isConnected
+     */
     public function initialized():Bool
         return isConnected;
 
+    /**
+     * [Description]
+     * @param id application id for connecting
+     * @param _onFinish code to run when connection is established
+     */
     public function new(?id:String, ?_onFinish:(Bool, Dynamic)->Void, ?toggle:Bool) {
         if (id != null) clientId = id;
         onFinish = _onFinish;
@@ -52,6 +61,10 @@ class ClientICP extends hxrpc.Pipeline {
         };
     }
 
+    /**
+     * [Description] initializes the rpc and reads the payload
+     * @return Bool
+     */
     public function initialize():Bool {
         if (clientId == null) return false;
         var packet = Pipeline.encodePacket(0, payload);
@@ -59,7 +72,6 @@ class ClientICP extends hxrpc.Pipeline {
 
         if (Pipeline.win32Connect(pipePath)) 
             responseData = Pipeline.win32SendAndRead(packet);
-
 
         if (responseData != null) {
             var result = Pipeline.decodePacket(responseData);
@@ -76,12 +88,20 @@ class ClientICP extends hxrpc.Pipeline {
 
     public static var cachePayload:Dynamic;
     
+    /**
+     * [Description]
+     * @param _payload if payload is recieved, build the user data class
+     * @return UserData
+     */
     public static function setData(?_payload:Dynamic):UserData {
-        if (_payload == null) _payload = cachePayload;
+        if (_payload == null) 
+            _payload = cachePayload;
         
-        if (_payload != null && _payload.user != null) _payload = _payload.user;
+        if (_payload != null && _payload.user != null) 
+            _payload = _payload.user;
         
-        if (_payload == null) return null;
+        if (_payload == null) 
+            return null;
 
         var temp:UserData = {
             userId: _payload.id != null ? _payload.id : _payload.userId,
@@ -96,6 +116,13 @@ class ClientICP extends hxrpc.Pipeline {
         return temp;
     }
 
+    /**
+     * [Description] sending commands to the discord api
+     * @param cmd command name
+     * @param args command arguements
+     * @param evt command event
+     * @param onSuccess if the command was executed successfully
+     */
     public function sendCommand(cmd:String, args:Dynamic, ?evt:String, ?onSuccess:Void->Void):Void {
         if (!isConnected) {
             logger.log("Cannot send command: Discord IPC is not connected.");
@@ -126,7 +153,10 @@ class ClientICP extends hxrpc.Pipeline {
     }
 
     /**
-     * Updates the Rich Presence status.
+     * [Description] Updates the Rich Presence status.
+     * @param activity activity command data
+     * @param evt command event
+     * @param onSuccess if command was executed successfully
      */
     public function setPresence(activity:Dynamic, ?evt:String, ?onSuccess:Void->Void):Void {
         var currentPid:Int = 0;
@@ -140,6 +170,9 @@ class ClientICP extends hxrpc.Pipeline {
         sendCommand("SET_ACTIVITY", args, evt, onSuccess);
     }
 
+    /**
+     * [Description] function to close the pipeline
+     */
     public function shutdown():Void {
         if (!isConnected) return;
 
