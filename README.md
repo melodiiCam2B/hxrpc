@@ -10,7 +10,9 @@ note that this library is windows exclusive as I don't have other os' to test on
 
 # Installation
 ---
-```haxelib install hxrpc```
+```
+haxelib install hxrpc
+```
 ---
 
 # Code Clearity
